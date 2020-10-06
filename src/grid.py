@@ -2,7 +2,7 @@ import numpy as np
 
 
 class Grid:
-    def __init__(self, spatial_size, obstacles=()):
+    def __init__(self, spatial_size, barriers=()):
         self.dimension = len(spatial_size)
         if self.dimension == 3:
             self.x_axis = spatial_size[0]
@@ -17,7 +17,7 @@ class Grid:
             self.occupancy = np.zeros([self.x_axis, self.y_axis], dtype=np.uint8)
         else:
             raise ValueError('spatial_size must be 2 or 3 dimension.')
-        for o in obstacles:
+        for o in barriers:
             self.occupy(o)
 
     def coordinates(self, v):
@@ -36,11 +36,14 @@ class Grid:
             return -1
 
     def decimal(self, v):
-        if v[0] < 0 or v[0] > self.x_axis or v[1] < 0 or v[1] > self.y_axis or v[2] < 0 or v[2] > self.z_axis:
-            return -1
+        # todo fix formula.
         if self.dimension == 3:
+            if v[0] < 0 or v[0] > self.x_axis or v[1] < 0 or v[1] > self.y_axis or v[2] < 0 or v[2] > self.z_axis:
+                return -1
             return v[0] * (self.y_axis * self.z_axis) + v[1] * self.z_axis + v[2]
         elif self.dimension == 2:
+            if v[0] < 0 or v[0] > self.x_axis or v[1] < 0 or v[1] > self.y_axis:
+                return -1
             return v[0] * self.y_axis + 1
         else:
             return -1
@@ -116,5 +119,5 @@ class Grid:
 
 if __name__ == '__main__':
     # todo write unittest.
-    g = Grid((8, 8), obstacles=(2, 0, 9))
+    g = Grid((8, 8), barriers=(2, 0, 9))
     print(g.euclidean_dist(3, 21))

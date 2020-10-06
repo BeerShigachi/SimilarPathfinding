@@ -8,13 +8,17 @@ if __name__ == '__main__':
     space = (20, 20)  # coordinates wise
 
     # index wise
-    start, goal = (21, 200)
-    obs = (2, 4)
+    start, goal = (0, 399)
+    barriers = (2, 4)
 
-    grid = Grid(spatial_size=space, obstacles=obs)
-    graph = GridWithWeights(width=grid.x_axis, height=grid.y_axis)
+    # {node(index):cost}
+    obstacles = {12: 4, 14: 4, 31: 2}
 
-    res = a_star_search(graph, start=grid.coordinates(start), goal=grid.coordinates(goal))
+    grid = Grid(spatial_size=space, barriers=barriers)
+    graph = GridWithWeights(width=grid.x_axis, height=grid.y_axis, barriers=barriers, obstacles=obstacles)
 
-    print(res)
+    path = a_star_search(graph, start=grid.coordinates(start), goal=grid.coordinates(goal))
+    print(path)
+
+
 

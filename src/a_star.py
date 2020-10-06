@@ -17,17 +17,17 @@ class Queue:
 
 
 class SquareGrid:
-    def __init__(self, width, height):
+    def __init__(self, width, height, barriers):
         self.width = width
         self.height = height
-        self.walls = []
+        self.barriers = barriers
 
     def in_bounds(self, id):
         (x, y) = id
         return 0 <= x < self.width and 0 <= y < self.height
 
     def passable(self, id):
-        return id not in self.walls
+        return id not in self.barriers
 
     def neighbors(self, id):
         (x, y) = id
@@ -39,12 +39,17 @@ class SquareGrid:
 
 
 class GridWithWeights(SquareGrid):
-    def __init__(self, width, height):
-        super().__init__(width, height)
-        self.weights = {}
+    def __init__(self, width, height, barriers=None, obstacles=None):
+        if obstacles is None:
+            obstacles = {}
+        if barriers is None:
+            barriers = []
+        super().__init__(width, height, barriers)
+        self.weights = obstacles
 
     def cost(self, from_node, to_node):
-        return self.weights.get(to_node, 1)
+        move_cost = self.weights.get(from_node, 1) + self.weights.get(to_node, 1)
+        return move_cost
 
 
 class PriorityQueue:
