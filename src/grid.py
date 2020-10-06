@@ -1,4 +1,3 @@
-
 import numpy as np
 
 
@@ -20,8 +19,6 @@ class Grid:
             raise ValueError('spatial_size must be 2 or 3 dimension.')
         for o in obstacles:
             self.occupy(o)
-
-        # self.nodes = self.all_nodes()
 
     def coordinates(self, v):
         if v < 0 or v > self.grid_size:
@@ -117,21 +114,7 @@ class Grid:
         return np.linalg.norm(s1 - s2, 2)
 
 
-g = Grid((8, 8), obstacles=(2, 0, 9))
-print(g.euclidean_dist(3, 21))
-# def all_nodes(self):
-#     nodes = []
-#     for i in range(self.x_axis):
-#         for j in range(self.y_axis):
-#             for k in range(self.z_axis):
-#                 nodes.append(np.array([i, j, k]))
-#
-#     return nodes
-
-# def neighbor(self, node):
-#     direction = [np.array([1, 0, 0]), np.array([0, 1, 0]), np.array([0, 0, 1]), np.array([-1, 0, 0]),
-#                  np.array([0, -1, 0]), np.array([0, 0, -1])]
-#     res = []
-#     for d in direction:
-#         res.append(node + d)
-#     return res
+if __name__ == '__main__':
+    # todo write unittest.
+    g = Grid((8, 8), obstacles=(2, 0, 9))
+    print(g.euclidean_dist(3, 21))
