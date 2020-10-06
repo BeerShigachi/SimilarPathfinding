@@ -30,7 +30,6 @@ class Grid:
             z = v % self.z_axis
             return x, y, z
         elif self.dimension == 2:
-            # todo fix formula.
             x = v // self.y_axis
             y = v % self.y_axis
             return x, y
@@ -38,6 +37,7 @@ class Grid:
             return -1
 
     def decimal(self, v):
+        # todo fix formula
         if self.dimension == 3:
             if v[0] < 0 or v[0] > self.x_axis or v[1] < 0 or v[1] > self.y_axis or v[2] < 0 or v[2] > self.z_axis:
                 return -1
@@ -45,9 +45,7 @@ class Grid:
         elif self.dimension == 2:
             if v[0] < 0 or v[0] > self.x_axis or v[1] < 0 or v[1] > self.y_axis:
                 return -1
-            elif v[0] == 0:
-                return v[1]
-            return v[0] * (self.y_axis + 1)
+            return v[0] * self.y_axis + v[1]
         else:
             return -1
 
