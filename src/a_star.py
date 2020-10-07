@@ -47,9 +47,8 @@ class GridWithWeights(SquareGrid):
         super().__init__(width, height, barriers)
         self.weights = obstacles
 
-    def cost(self, from_node, to_node):
-        move_cost = self.weights.get(from_node, 1) + self.weights.get(to_node, 1)
-        return move_cost
+    def cost(self, from_node, to_node, alpha=0):
+        return 1 + alpha * (((self.weights.get(from_node, 1) + self.weights.get(to_node, 1)) / 2) - 1)
 
 
 class PriorityQueue:

@@ -37,7 +37,6 @@ class Grid:
             return -1
 
     def decimal(self, v):
-        # todo fix formula
         if self.dimension == 3:
             if v[0] < 0 or v[0] > self.x_axis or v[1] < 0 or v[1] > self.y_axis or v[2] < 0 or v[2] > self.z_axis:
                 return -1
