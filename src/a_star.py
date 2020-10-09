@@ -17,22 +17,32 @@ class Queue:
 
 
 class SquareGrid:
-    def __init__(self, width, height, barriers):
+    def __init__(self, width, height, barriers, depth=0):
         self.width = width
         self.height = height
+        self.depth = depth
         self.barriers = barriers
 
     def in_bounds(self, id):
-        (x, y) = id
-        return 0 <= x < self.width and 0 <= y < self.height
+        if self.depth == 0:
+            (x, y) = id
+            return 0 <= x < self.width and 0 <= y < self.height
+        elif self.depth <= 1:
+
+            return 0 <= x < self.width and 0 <= y < self.height and 0 <= z < self.depth
 
     def passable(self, id):
         return id not in self.barriers
 
     def neighbors(self, id):
-        (x, y) = id
-        results = [(x + 1, y), (x, y - 1), (x - 1, y), (x, y + 1)]
-        if (x + y) % 2 == 0: results.reverse()  # aesthetics
+        if self.depth == 0:
+            (x, y) = id
+            results = [(x + 1, y), (x, y - 1), (x - 1, y), (x, y + 1)]
+            if (x + y) % 2 == 0: results.reverse()  # aesthetics
+
+        elif self.depth <= 1:
+            (x, y, z) = id
+            results = [(x + 1, y, z), (x - 1, y, z), (x, y + 1, z), (x, y - 1, z), (x, y, z + 1), (x, y, z - 1)]
         results = filter(self.in_bounds, results)
         results = filter(self.passable, results)
         return results
