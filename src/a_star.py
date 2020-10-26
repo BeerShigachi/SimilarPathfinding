@@ -1,5 +1,6 @@
 import collections
 import heapq
+import numpy as np
 
 
 class Queue:
@@ -48,7 +49,9 @@ class GridWithWeights(SquareGrid):
         self.weights = obstacles
 
     def cost(self, from_node, to_node, alpha=0):
-        return 1 + alpha * (((self.weights.get(from_node, 1) + self.weights.get(to_node, 1)) / 2) - 1)
+        real_cost = 1 + alpha * (((self.weights.get(from_node, 1) + self.weights.get(to_node, 1)) / 2) - 1)
+        noise = np.random.uniform(0, 1)  # gaussian distribution can be used here.
+        return real_cost + noise
 
 
 class PriorityQueue:
