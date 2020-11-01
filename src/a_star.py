@@ -63,6 +63,17 @@ class GridWithWeights(SquareGrid):
         noise = np.random.uniform(0, 1)  # gaussian distribution can be used here.
         return real_cost + noise
 
+    def heuristic(self, v1, v2):
+        # todo define L2 norm
+        if self.depth == 0:
+            (x1, y1) = v1
+            (x2, y2) = v2
+            return abs(x1 - x2) + abs(y1 - y2)
+        elif self.depth <= 1:
+            (x1, y1, z1) = v1
+            (x2, y2, z2) = v2
+            return abs(x1 - x2) + abs(y1 - y2) + abs(z1 - z2)
+
 
 class PriorityQueue:
     def __init__(self):
@@ -89,12 +100,6 @@ def reconstruct_path(came_from, start, goal):
     return path
 
 
-def heuristic(a, b):
-    (x1, y1) = a
-    (x2, y2) = b
-    return abs(x1 - x2) + abs(y1 - y2)
-
-
 def a_star_search(graph, start, goal):
     frontier = PriorityQueue()
     frontier.put(start, 0)
@@ -113,7 +118,7 @@ def a_star_search(graph, start, goal):
             new_cost = cost_so_far[current] + graph.cost(current, next)
             if next not in cost_so_far or new_cost < cost_so_far[next]:
                 cost_so_far[next] = new_cost
-                priority = new_cost + heuristic(goal, next)
+                priority = new_cost + graph.heuristic(goal, next)
                 frontier.put(next, priority)
                 came_from[next] = current
 
