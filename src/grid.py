@@ -1,6 +1,9 @@
 import numpy as np
 
+from utilities.util import profile_args
 
+
+@profile_args
 class Grid:
     def __init__(self, spatial_size, barriers=()):
         self.dimension = len(spatial_size)

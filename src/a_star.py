@@ -1,6 +1,7 @@
 import collections
 import heapq
 import numpy as np
+from utilities.util import profile_time, profile_args
 
 
 class Queue:
@@ -15,12 +16,6 @@ class Queue:
 
     def get(self):
         return self.elements.popleft()
-
-def wrapper(func):
-    def checker(*args, **kwargs):
-        print("Arguments were: %s, %s" % (args, kwargs))
-        return func(*args, **kwargs)
-    return checker
 
 
 class SquareGrid:
@@ -56,6 +51,7 @@ class SquareGrid:
         return results
 
 
+@profile_args
 class GridWithWeights(SquareGrid):
     def __init__(self, width, height, barriers=None, obstacles=None):
         if obstacles is None:
@@ -107,6 +103,7 @@ def reconstruct_path(came_from, start, goal):
     return path
 
 
+@profile_time
 def a_star_search(graph, start, goal):
     frontier = PriorityQueue()
     frontier.put(start, 0)
