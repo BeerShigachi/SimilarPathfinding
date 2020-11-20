@@ -16,6 +16,12 @@ class Queue:
     def get(self):
         return self.elements.popleft()
 
+def wrapper(func):
+    def checker(*args, **kwargs):
+        print("Arguments were: %s, %s" % (args, kwargs))
+        return func(*args, **kwargs)
+    return checker
+
 
 class SquareGrid:
     def __init__(self, width, height, barriers, depth=0):
@@ -24,25 +30,26 @@ class SquareGrid:
         self.depth = depth
         self.barriers = barriers
 
-    def in_bounds(self, id):
+    def in_bounds(self, coordinates):
         if self.depth == 0:
-            (x, y) = id
+            (x, y) = coordinates
             return 0 <= x < self.width and 0 <= y < self.height
         elif self.depth <= 1:
-
+            (x, y, z) = coordinates
             return 0 <= x < self.width and 0 <= y < self.height and 0 <= z < self.depth
 
-    def passable(self, id):
-        return id not in self.barriers
+    def passable(self, coordinates):
+        return coordinates not in self.barriers
 
-    def neighbors(self, id):
+    def neighbors(self, coordinates):
+        results = None
         if self.depth == 0:
-            (x, y) = id
+            (x, y) = coordinates
             results = [(x + 1, y), (x, y - 1), (x - 1, y), (x, y + 1)]
             if (x + y) % 2 == 0: results.reverse()  # aesthetics
 
         elif self.depth <= 1:
-            (x, y, z) = id
+            (x, y, z) = coordinates
             results = [(x + 1, y, z), (x - 1, y, z), (x, y + 1, z), (x, y - 1, z), (x, y, z + 1), (x, y, z - 1)]
         results = filter(self.in_bounds, results)
         results = filter(self.passable, results)
@@ -114,13 +121,13 @@ def a_star_search(graph, start, goal):
         if current == goal:
             break
 
-        for next in graph.neighbors(current):
-            new_cost = cost_so_far[current] + graph.cost(current, next)
-            if next not in cost_so_far or new_cost < cost_so_far[next]:
-                cost_so_far[next] = new_cost
-                priority = new_cost + graph.heuristic(goal, next)
-                frontier.put(next, priority)
-                came_from[next] = current
+        for next_node in graph.neighbors(current):
+            new_cost = cost_so_far[current] + graph.cost(current, next_node)
+            if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
+                cost_so_far[next_node] = new_cost
+                priority = new_cost + graph.heuristic(goal, next_node)
+                frontier.put(next_node, priority)
+                came_from[next_node] = current
 
     res = reconstruct_path(came_from, start, goal)
 
