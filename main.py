@@ -17,7 +17,7 @@ if __name__ == '__main__':
     grid = Grid(spatial_size=space, barriers=barriers)
     graph = GridWithWeights(width=grid.x_axis, height=grid.y_axis, barriers=barriers, obstacles=obstacles)
 
-    path = a_star_search(graph, start=grid.coordinates(start), goal=grid.coordinates(goal))
+    path = a_star_search(graph, start=grid.coordinates(start), goal=grid.coordinates(goal), relays=[])
     res = [grid.decimal(v) for v in path]
 
     print(res)
