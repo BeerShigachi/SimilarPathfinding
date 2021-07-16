@@ -5,8 +5,9 @@ from utilities.util import profile_args
 
 @profile_args
 class Grid:
-    def __init__(self, spatial_size, barriers=()):
+    def __init__(self, spatial_size, barriers):
         self.dimension = len(spatial_size)
+        self.barriers = barriers
         if self.dimension == 3:
             self.x_axis = spatial_size[0]
             self.y_axis = spatial_size[1]
@@ -16,11 +17,12 @@ class Grid:
         elif self.dimension == 2:
             self.x_axis = spatial_size[0]
             self.y_axis = spatial_size[1]
+            self.z_axis = 0
             self.grid_size = self.x_axis * self.y_axis
             self.occupancy = np.zeros([self.x_axis, self.y_axis], dtype=np.uint8)
         else:
             raise ValueError('spatial_size must be 2 or 3 dimension.')
-        for o in barriers:
+        for o in self.barriers:
             self.occupy(o)
 
     def coordinates(self, v):

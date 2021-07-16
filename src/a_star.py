@@ -19,17 +19,17 @@ class Queue:
 
 
 class SquareGrid:
-    def __init__(self, width, height, barriers, depth=0):
-        self.width = width
-        self.height = height
-        self.depth = depth
-        self.barriers = barriers
+    def __init__(self, grid):
+        self.width = grid.x_axis
+        self.height = grid.y_axis
+        self.depth = grid.z_axis
+        self.barriers = grid.barriers
 
     def in_bounds(self, coordinates):
         if self.depth == 0:
             (x, y) = coordinates
             return 0 <= x < self.width and 0 <= y < self.height
-        elif self.depth <= 1:
+        elif self.depth >= 1:
             (x, y, z) = coordinates
             return 0 <= x < self.width and 0 <= y < self.height and 0 <= z < self.depth
 
@@ -43,22 +43,22 @@ class SquareGrid:
             results = [(x + 1, y), (x, y - 1), (x - 1, y), (x, y + 1)]
             if (x + y) % 2 == 0: results.reverse()  # aesthetics
 
-        elif self.depth <= 1:
+        elif self.depth >= 1:
             (x, y, z) = coordinates
             results = [(x + 1, y, z), (x - 1, y, z), (x, y + 1, z), (x, y - 1, z), (x, y, z + 1), (x, y, z - 1)]
+
         results = filter(self.in_bounds, results)
         results = filter(self.passable, results)
+
         return results
 
 
 @profile_args
 class GridWithWeights(SquareGrid):
-    def __init__(self, width, height, barriers=None, obstacles=None):
+    def __init__(self, grid, obstacles):
         if obstacles is None:
             obstacles = {}
-        if barriers is None:
-            barriers = []
-        super().__init__(width, height, barriers)
+        super().__init__(grid)
         self.weights = obstacles
 
     def cost(self, from_node, to_node, alpha=0):
@@ -72,7 +72,7 @@ class GridWithWeights(SquareGrid):
             (x1, y1) = v1
             (x2, y2) = v2
             return abs(x1 - x2) + abs(y1 - y2)
-        elif self.depth <= 1:
+        elif self.depth >= 1:
             (x1, y1, z1) = v1
             (x2, y2, z2) = v2
             return abs(x1 - x2) + abs(y1 - y2) + abs(z1 - z2)
@@ -113,13 +113,13 @@ def a_star_search(graph, start, goal, relays):
     cost_so_far[start] = 0
     relays.append(goal)
     relay = relays.pop(0)
-
     while not frontier.empty():
         current = frontier.get()
         if current == relay:
             if relays:
                 relay = relays.pop(0)
-            break
+            else:
+                break
 
         for next_node in graph.neighbors(current):
             new_cost = cost_so_far[current] + graph.cost(current, next_node)
@@ -129,7 +129,7 @@ def a_star_search(graph, start, goal, relays):
                 frontier.put(next_node, priority)
                 came_from[next_node] = current
 
-    res = reconstruct_path(came_from, start, relay)
+    res = reconstruct_path(came_from, start, goal)
 
     return res
 

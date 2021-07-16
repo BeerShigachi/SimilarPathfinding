@@ -7,8 +7,13 @@ if __name__ == '__main__':
     # 2d
     space = (20, 20)  # coordinates wise
 
+    # 3d
+    # space = (20, 20, 5)  # coordinates wise
+
     # index wise
-    start, goal = (0, 399)
+    start, goal = (0, 350)
+
+    # constraints. you cannot pass.
     barriers = (2, 4)
 
     # todo implement algorithm to define a similarity.
@@ -18,7 +23,7 @@ if __name__ == '__main__':
     obstacles = {12: 4, 14: 4, 31: 2}
 
     grid = Grid(spatial_size=space, barriers=barriers)
-    graph = GridWithWeights(width=grid.x_axis, height=grid.y_axis, barriers=barriers, obstacles=obstacles)
+    graph = GridWithWeights(grid=grid, obstacles=obstacles)
 
     path = a_star_search(graph, start=grid.coordinates(start), goal=grid.coordinates(goal), relays=[])
     res = [grid.decimal(v) for v in path]
