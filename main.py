@@ -11,6 +11,9 @@ if __name__ == '__main__':
     start, goal = (0, 399)
     barriers = (2, 4)
 
+    # todo implement algorithm to define a similarity.
+    #  similarity = high, low, etc...
+
     # {node(index):cost}
     obstacles = {12: 4, 14: 4, 31: 2}
 
