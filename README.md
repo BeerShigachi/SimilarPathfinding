@@ -1,5 +1,5 @@
 # Similar path generator.
-generate similar path(s) of given path. under development.
+generate similar path(s) of given path. Currently it can generate randomized shortest(not promised) path in 2D/3D. under development.
 
 ## Problems of Random walk
 
