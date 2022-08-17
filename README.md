@@ -12,7 +12,5 @@ The cost function can be used for node weight such as obstacles which is passabl
 Cost function and heuristic function need to be at the same scale.
 When the cost function also takes noise the result path will be randomized.(such as random walk but towords the goal.)
 
-## Noise for cost function
-
 ## Heuristic function in A*
 The heuristic function h(n) tells A* an estimate of the minimum cost from vertex n to the goal.
