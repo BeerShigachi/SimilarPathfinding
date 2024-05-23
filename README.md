@@ -1,5 +1,5 @@
 # Similar path generator.
-generate similar path(s) of given path. Currently it can generate randomized shortest(not promised) path in 2D/3D. under development.
+generate similar path(s) of given path. Currently it can generate randomized nearly shortest path in 2D/3D. under development.
 
 ## Priority toward next node
 The priority F(n) tells A* total moving cost from current node to adjacent nodes.
